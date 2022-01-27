@@ -14,4 +14,4 @@ bool readBedGraph(std::string filename, std::vector <Peak> &vecOfPeaks); // pass
 
 bool sortByChrom(const long int& in1, const long int& in2); // func to pass into std::sort() to sort by chrom num, smallest to largest
 
-void identifyOverlap(std::vector <Peak> &file1, std::vector <Peak> &file2, std::vector <Peak> &overlapVec);
+void identifyOverlap(std::vector <Peak> &file1, std::vector <Peak> &file2, std::vector <Peak> &overlapVec); // identify where the input files overlap, including overhangs

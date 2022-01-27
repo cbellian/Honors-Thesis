@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 
+// read in file
 bool readBedGraph(std::string fileName, std::vector<Peak>&vecOfPeaks){
     std::ifstream bedIn;
     bedIn.open(fileName);
@@ -31,6 +32,7 @@ bool readBedGraph(std::string fileName, std::vector<Peak>&vecOfPeaks){
     return true;
 }
 
+// predicate for sorting algo
 bool sortByChrom(const Peak& in1, const Peak& in2){
     return in1.chromNum < in2.chromNum;
 }
