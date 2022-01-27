@@ -1,4 +1,4 @@
-# Honors Thesis CRE ID
+# Honors Thesis Cis-Regulatory Identification
 ## Shell scripts for command line tools
 Adapters.sh is a shell script to run all 8 .fastq files through CutAdapt with the appropriate flags. It is divided across 4 paired sequence runs. <p>
 Bowtie.sh runs Bowtie2 for each of the paired outputs using a very sensitive local alignment and then returns a single SAM file. <p>
