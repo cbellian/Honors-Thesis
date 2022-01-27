@@ -35,6 +35,18 @@ bool sortByChrom(const Peak& in1, const Peak& in2){
     return in1.chromNum < in2.chromNum;
 }
 
-void identifyOverlap(std::vector<Peak> &file1, std::vector<Peak> &file2,std::vector<Peak> &overlappedPeaks){
-    
+// can this be made more efficient? will be computationally expensive
+void identifyOverlap(std::vector<Peak> &peakfile1, std::vector<Peak> &peakfile2,std::vector<Peak> &overlappedPeaks){
+    for(int i = 0; i < peakfile1.size(); i++){
+        for(int j = 0; j < peakfile2.size(); j++){
+            if(peakfile1.at(i).chromNum == peakfile2.at(j).chromNum){
+                if(peakfile1.at(i).chromStart >= peakfile2.at(j).chromStart && peakfile1.at(i).chromStart <= peakfile2.at(j).chromEnd){
+                    overlappedPeaks.push_back(peakfile1.at(i));
+                }
+                else if(peakfile2.at(j).chromStart >= peakfile1.at(i).chromStart && peakfile2.at(j).chromStart <= peakfile1.at(i).chromEnd){
+                    overlappedPeaks.push_back(peakfile2.at(j));
+                }
+            }
+        }
+    }
 }

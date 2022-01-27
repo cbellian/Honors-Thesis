@@ -16,5 +16,7 @@ int main(int argc, char * argv[]){
         std::cout << "two.bedGraph failed to open\n";
     }
     std::sort(vecOfPeaksOne.begin(), vecOfPeaksOne.end(),sortByChrom);
+    std::sort(vecOfPeaksTwo.begin(), vecOfPeaksTwo.end(), sortByChrom);
     std::vector <Peak> overlappedPeaks;
+    identifyOverlap(vecOfPeaksOne,vecOfPeaksTwo,overlappedPeaks);
 }
