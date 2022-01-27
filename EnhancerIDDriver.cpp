@@ -13,4 +13,5 @@ int main(int argc, char * argv[]){
     if(!readFile2Output){
         std::cout << "two.bedGraph failed to open\n";
     }
+    std::vector <Peak> overlappedPeaks;
 }

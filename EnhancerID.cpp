@@ -30,3 +30,7 @@ bool readBedGraph(std::string fileName, std::vector<Peak>&vecOfPeaks){
     }
     return true;
 }
+
+void identifyOverlap(std::vector<Peak> &file1, std::vector<Peak> &file2,std::vector<Peak> &overlappedPeaks){
+    
+}

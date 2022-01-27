@@ -9,4 +9,11 @@ struct Peak{
     long int chromEnd;
 };
 
-bool readBedGraph(std::string fielname, std::vector <Peak> &vecOfPeaks); // pass by ref so that return isnt needed because vec is normally passed by value
+struct chromSorted{
+    long int chromStart;
+    long int chromEnd;
+};
+
+bool readBedGraph(std::string filename, std::vector <Peak> &vecOfPeaks); // pass by ref so that return isnt needed because vec is normally passed by value
+
+void identifyOverlap(std::vector <Peak> &file1, std::vector <Peak> &file2, std::vector <Peak> &overlapVec);
