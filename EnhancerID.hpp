@@ -9,9 +9,8 @@ struct Peak{
     long int chromEnd;
 };
 
-struct chromSorted{
-    long int chromStart;
-    long int chromEnd;
+struct chromSorted : public Peak{
+    std::vector<Peak> vecOfPeaksInChrom;
 };
 
 bool readBedGraph(std::string filename, std::vector <Peak> &vecOfPeaks); // pass by ref so that return isnt needed because vec is normally passed by value
