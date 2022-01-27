@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 struct Peak{
     int chromNum;
@@ -8,4 +9,4 @@ struct Peak{
     long int chromEnd;
 };
 
-int readBedGraph(std::string fielname,Peak arrayOfPeaks[],int length);
+bool readBedGraph(std::string fielname, std::vector <Peak> &vecOfPeaks); // pass by ref so that return isnt needed because vec is normally passed by value

@@ -3,12 +3,13 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <vector>
 
-int readBedGraph(std::string fileName, Peak arrayOfPeaks[],int length){
+bool readBedGraph(std::string fileName, std::vector<Peak>&vecOfPeaks){
     std::ifstream bedIn;
     bedIn.open(fileName);
     if(bedIn.fail()){
-        return -1;
+        return false;
     }
     std::string line;
     int index = 0;
@@ -21,9 +22,11 @@ int readBedGraph(std::string fileName, Peak arrayOfPeaks[],int length){
         getline(linestream,chromStart,',');
         getline(linestream,chromEnd,',');
         getline(linestream,line,'\n');
-        arrayOfPeaks[index].chromNum = stoi(chromNum);
-        arrayOfPeaks[index].chromStart = stoi(chromStart);
-        arrayOfPeaks[index].chromEnd = stoi(chromEnd);
+        Peak tempPeak;
+        tempPeak.chromNum = stoi(chromNum);
+        tempPeak.chromStart = stol(chromStart);
+        tempPeak.chromEnd = stol(chromEnd);
+        vecOfPeaks.push_back(tempPeak);
     }
-
+    return true;
 }
