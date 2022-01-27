@@ -1,7 +1,7 @@
 #Trim
 cd /Users/cameronbellian/miniconda3/
 #cutadapt --nextseq-trim=20 -o out.fastq input.fastq
-cutadapt --nextseq-trim=20 --cores 12 -a AATGATACGGCGACCACCGAGATCTACACTAGATCGCTCGTCGGCAGCGTCAGATGTGTAT -a ATACACATCTGACGCTGCCGACGAGCGATCTAGTGTAGATCTCGGTGGTCGCCGTATCATT -A CAAGCAGAAGACGGCATACGAGATAGGAGTCCGTCTCGTGGGCTCGGAGATGTG -A CACATCTCCGAGCCCACGAGACGGACTCCTATCTCGTATGCCGTCTTCTGCTTG -o /Users/cameronbellian/Desktop/stg22_me2.1.fastq -p /Users/cameronbellian/Desktop/stg22_me2.2.fastq /Users/cameronbellian/Desktop/stage22_me2_r1.fastq /Users/cameronbellian/Desktop/stage22_me2_r2.fastq
+cutadapt -q 20 --cores 12 -a file:adapters.fasta  -A file:adapters.fasta -o /Users/cameronbellian/Desktop/stg22_me2.1.fastq -p /Users/cameronbellian/Desktop/stg22_me2.2.fastq /Users/cameronbellian/Desktop/stage22_me2_r1.fastq /Users/cameronbellian/Desktop/stage22_me2_r2.fastq
 
 #Align Local
 /Users/cameronbellian/Desktop/Lab_BioInfo_tools/bowtie2-2.4.4-macos-x86_64/bowtie2 --local --very-sensitive --no-mixed --no-discordant --phred33 -I 10 -X 700 -x/Users/cameronbellian/Desktop/2017_Index -1 /Users/cameronbellian/Desktop/stg22_me2.1.fastq -2 /Users/cameronbellian/Desktop/stg22_me2.2.fastq -S /Users/cameronbellian/Desktop/stg22_me2_align_out -p 12
