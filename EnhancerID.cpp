@@ -31,6 +31,10 @@ bool readBedGraph(std::string fileName, std::vector<Peak>&vecOfPeaks){
     return true;
 }
 
+bool sortByChrom(const Peak& in1, const Peak& in2){
+    return in1.chromNum < in2.chromNum;
+}
+
 void identifyOverlap(std::vector<Peak> &file1, std::vector<Peak> &file2,std::vector<Peak> &overlappedPeaks){
     
 }
