@@ -9,7 +9,6 @@ struct Peak{
     long int chromEnd;
 };
 
-
 bool readBedGraph(std::string filename, std::vector <Peak> &vecOfPeaks); // pass by ref so that return isnt needed because vec is normally passed by value
 
 bool sortByChrom(const long int& in1, const long int& in2); // func to pass into std::sort() to sort by chrom num, smallest to largest

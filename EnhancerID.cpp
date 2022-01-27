@@ -29,6 +29,7 @@ bool readBedGraph(std::string fileName, std::vector<Peak>&vecOfPeaks){
         tempPeak.chromEnd = stol(chromEnd);
         vecOfPeaks.push_back(tempPeak);
     }
+    bedIn.close();
     return true;
 }
 
