@@ -2,8 +2,8 @@
 #include <algorithm>
 
 int main(int argc, char * argv[]){
-    if(argc != 3){
-        std::cout << "Please use ./EnhancerID one.bebGraph two.bedGraph\n";
+    if(argc != 5){
+        std::cout << "Please use ./EnhancerID one.bebGraph two.bedGraph refseq.bed integer distance to be searched \n";
     } // checks for correct number of file input
     std::vector <Peak> vecOfPeaksOne;
     std::vector <Peak> vecOfPeaksTwo;
