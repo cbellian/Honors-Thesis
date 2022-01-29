@@ -2,7 +2,7 @@
 #include <algorithm>
 
 int main(int argc, char * argv[]){
-    if(argc != 5){
+    if(argc != 4){
         std::cout << "Please use ./EnhancerID one.bebGraph two.bedGraph refseq.bed integer distance to be searched \n";
     } // checks for correct number of file input
     std::vector <Peak> vecOfPeaksOne;
@@ -17,16 +17,14 @@ int main(int argc, char * argv[]){
         std::cout << "two.bedGraph failed to open\n";
         return -2;
     }
-    std::vector <Peak> vecOfTranscripts;
-    bool readTranscriptOutput = readBedGraph(argv[3],vecOfTranscripts);
+    std::vector <Transcript> vecOfTranscripts;
+    bool readTranscriptOutput = readTranscriptBed(argv[3],vecOfTranscripts);
     if(!readTranscriptOutput){
         std::cout << "refseq.bed failed to open\n";
         return -3;
     }
-    std::string bounds = argv[4];
-    int boundsOfSearch = stoi(bounds);
-    std::sort(vecOfPeaksOne.begin(), vecOfPeaksOne.end(),sortByChrom); // sort algo by chrom num
-    std::sort(vecOfPeaksTwo.begin(), vecOfPeaksTwo.end(), sortByChrom); // sort algo by chrom num
+    //std::sort(vecOfPeaksOne.begin(), vecOfPeaksOne.end(),sortByChrom); // sort algo by chrom num
+    //std::sort(vecOfPeaksTwo.begin(), vecOfPeaksTwo.end(), sortByChrom); // sort algo by chrom num
     std::vector <Peak> overlappedPeaks;
     identifyOverlap(vecOfPeaksOne,vecOfPeaksTwo,overlappedPeaks); // void func, all passed by ref, edits passed by ref overlapped peak vec
     char input;

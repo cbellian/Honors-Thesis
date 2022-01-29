@@ -53,3 +53,35 @@ void identifyOverlap(std::vector<Peak> &peakfile1, std::vector<Peak> &peakfile2,
         }
     }
 }
+
+
+// read transcript file which includes accesion num
+bool readTranscriptBed(std::string filename, std::vector <Transcript> &vecOfTranscripts){
+    std::ifstream bedIn;
+    bedIn.open(filename);
+    if(bedIn.fail()){
+        return false;
+    }
+    std::string line;
+    int index = 0;
+    while(getline(bedIn,line)){
+        std::stringstream linestream(line);
+        std::string chromNum;
+        std::string chromStart;
+        std::string chromEnd;
+        std::string accesionString;
+        getline(linestream,chromNum,',');
+        getline(linestream,chromStart,',');
+        getline(linestream,chromEnd,',');
+        getline(linestream,accesionString,',');
+        getline(linestream,line,'\n');
+        Transcript tempTranscript;
+        tempTranscript.chromNum = stoi(chromNum);
+        tempTranscript.chromStart = stol(chromStart);
+        tempTranscript.chromEnd = stol(chromEnd);
+        tempTranscript.accesion = accesionString;
+        vecOfTranscripts.push_back(tempTranscript);
+    }
+    bedIn.close();
+    return true;
+}
