@@ -4,7 +4,7 @@
 #include <vector>
 
 struct Peak{
-    int chromNum;
+    std::string chromNum;
     long int chromStart;
     long int chromEnd;
 };

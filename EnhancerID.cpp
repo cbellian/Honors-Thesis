@@ -19,12 +19,12 @@ bool readBedGraph(std::string fileName, std::vector<Peak>&vecOfPeaks){
         std::string chromNum;
         std::string chromStart;
         std::string chromEnd;
-        getline(linestream,chromNum,',');
-        getline(linestream,chromStart,',');
-        getline(linestream,chromEnd,',');
+        getline(linestream,chromNum,'\t');
+        getline(linestream,chromStart,'\t');
+        getline(linestream,chromEnd,'\t');
         getline(linestream,line,'\n');
         Peak tempPeak;
-        tempPeak.chromNum = stoi(chromNum);
+        tempPeak.chromNum = chromNum;
         tempPeak.chromStart = stol(chromStart);
         tempPeak.chromEnd = stol(chromEnd);
         vecOfPeaks.push_back(tempPeak);
