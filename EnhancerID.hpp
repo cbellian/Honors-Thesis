@@ -1,13 +1,18 @@
+#ifndef ENHANCERID_HPP
+#define ENHANCERID_HPP
+
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
+#include <boost/tuple/tuple.hpp>
 
 struct Peak{
     std::string chromNum;
     long int chromStart;
     long int chromEnd;
 };
+
 
 struct Transcript{
     int chromNum;
@@ -20,6 +25,12 @@ bool readBedGraph(std::string filename, std::vector <Peak> &vecOfPeaks); // pass
 
 bool sortByChrom(const long int& in1, const long int& in2); // func to pass into std::sort() to sort by chrom num, smallest to largest
 
-void identifyOverlap(std::vector <Peak> &file1, std::vector <Peak> &file2, std::vector <Peak> &overlapVec); // identify where the input files overlap, including overhangs
+void identifyOverlap(std::vector <long int> &file1, std::vector <long int> &file2, std::vector <Peak> &overlapVec); // identify where the input files overlap, including overhangs
 
 bool readTranscriptBed(std::string filename, std::vector <Transcript> &vecOfTranscripts);
+
+void sepByChromNum(std::vector <Peak> &vecOfPeaks,std::vector<long int> &chromLoc, std::string &chromName);
+
+void writeToFile(std::vector <Peak> &vecOfPeaks);
+
+#endif

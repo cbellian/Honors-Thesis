@@ -4,6 +4,9 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <thread>
+#include <boost/tuple/tuple.hpp>
+#include <algorithm>
 
 // read in file
 bool readBedGraph(std::string fileName, std::vector<Peak>&vecOfPeaks){
@@ -13,8 +16,7 @@ bool readBedGraph(std::string fileName, std::vector<Peak>&vecOfPeaks){
         return false;
     }
     std::string line;
-    int index = 0;
-    while(getline(bedIn,line)){
+    while(getline(bedIn,line, '\n')){
         std::stringstream linestream(line);
         std::string chromNum;
         std::string chromStart;
@@ -22,12 +24,12 @@ bool readBedGraph(std::string fileName, std::vector<Peak>&vecOfPeaks){
         getline(linestream,chromNum,'\t');
         getline(linestream,chromStart,'\t');
         getline(linestream,chromEnd,'\t');
-        getline(linestream,line,'\n');
         Peak tempPeak;
         tempPeak.chromNum = chromNum;
         tempPeak.chromStart = stol(chromStart);
         tempPeak.chromEnd = stol(chromEnd);
         vecOfPeaks.push_back(tempPeak);
+        linestream.clear(); // necessary to avoid out of range in vec
     }
     bedIn.close();
     return true;
@@ -39,16 +41,15 @@ bool sortByChrom(const Peak& in1, const Peak& in2){
 }
 
 // can this be made more efficient? will be computationally expensive
-void identifyOverlap(std::vector<Peak> &peakfile1, std::vector<Peak> &peakfile2,std::vector<Peak> &overlappedPeaks){
-    for(int i = 0; i < peakfile1.size(); i++){
-        for(int j = 0; j < peakfile2.size(); j++){
-            if(peakfile1.at(i).chromNum == peakfile2.at(j).chromNum){
-                if(peakfile1.at(i).chromStart >= peakfile2.at(j).chromStart && peakfile1.at(i).chromStart <= peakfile2.at(j).chromEnd){
-                    overlappedPeaks.push_back(peakfile1.at(i));
-                }
-                else if(peakfile2.at(j).chromStart >= peakfile1.at(i).chromStart && peakfile2.at(j).chromStart <= peakfile1.at(i).chromEnd){
-                    overlappedPeaks.push_back(peakfile2.at(j));
-                }
+void identifyOverlap(std::vector<long int> &peakfile1, std::vector<long int> &peakfile2,std::vector<Peak> &overlappedPeaks){
+    Peak tempPeak;
+    for(int i = 0; i < peakfile1.size()-2; i+=2){
+        for(int j = 0; j < peakfile2.size()-2; j+=2){
+            if(peakfile1.at(i) >= peakfile2.at(j) && peakfile1.at(i) <= peakfile2.at(j+1)){
+                tempPeak.chromStart = peakfile2.at(j);
+                tempPeak.chromEnd = std::max(peakfile1.at(i+1),peakfile2.at(j+1));
+                tempPeak.chromNum = "chr1";
+                overlappedPeaks.push_back(tempPeak);
             }
         }
     }
@@ -84,4 +85,21 @@ bool readTranscriptBed(std::string filename, std::vector <Transcript> &vecOfTran
     }
     bedIn.close();
     return true;
+}
+
+void sepByChromNum(std::vector <Peak> &vecOfPeaks,std::vector<long int> &chromLoc, std::string &chromName){
+    for(int i = 0; i < vecOfPeaks.size(); i++){
+        if(vecOfPeaks.at(i).chromNum == chromName){
+            chromLoc.push_back(vecOfPeaks.at(i).chromStart);
+            chromLoc.push_back(vecOfPeaks.at(i).chromEnd);
+        }
+    }
+}
+
+void writeToFile(std::vector <Peak> &vecOfPeaks){
+    std::ofstream out1;
+    out1.open("output.bed");
+    for(int i = 0; i < vecOfPeaks.size(); i++){
+        out1 << vecOfPeaks.at(i).chromNum << '\t' << vecOfPeaks.at(i).chromStart << '\t' << vecOfPeaks.at(i).chromEnd << '\n';
+    }
 }

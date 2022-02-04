@@ -6,26 +6,39 @@ int main(int argc, char *argv[])
 {
     if (argc != 3)
     {
-        std::cout << "Please use ./EnhancerID one.bebGraph two.bedGraph refseq.bed integer distance to be searched \n";
+        std::cout << "Please use ./EnhancerID one.bebGraph two.bedGraph \n";
+        return -1;
     } // checks for correct number of file input
     std::vector<Peak> vecOfPeaksOne;
     std::vector<Peak> vecOfPeaksTwo;
-    std::thread t1(readBedGraph, argv[1], std::ref(vecOfPeaksOne)); // vec passed by ref, uses bool to identify succesful read
-    std::thread t2(readBedGraph, argv[2], std::ref(vecOfPeaksTwo)); // vec passed by ref, uses bool to identify succesful read
-    std::vector<Transcript> vecOfTranscripts;
+    bool peakOne = readBedGraph(argv[1], vecOfPeaksOne); // vec passed by ref, uses bool to identify succesful read
+    bool peakTwo = readBedGraph(argv[2], vecOfPeaksTwo); // vec passed by ref, uses bool to identify succesful read
+    if(!peakOne)
+    {
+        std::cout <<"one failed\n";
+    }
+    if(!peakTwo)
+    {
+        std::cout <<"two failed\n";
+    }
+    // std::vector<Transcript> vecOfTranscripts;
     // bool readTranscriptOutput = readTranscriptBed(argv[3], vecOfTranscripts);
     // if (!readTranscriptOutput)
     // {
     //     std::cout << "refseq.bed failed to open\n";
     //     return -3;
     // }
-    // std::sort(vecOfPeaksOne.begin(), vecOfPeaksOne.end(),sortByChrom); // sort algo by chrom num
-    // std::sort(vecOfPeaksTwo.begin(), vecOfPeaksTwo.end(), sortByChrom); // sort algo by chrom num
+    std::vector<long int> vecSep1;
+    std::vector<long int> vecSep2;
+    std::vector<std::vector<long int>> vecOfAllChrom;
+    std::vector<std::string> chromIndex;
+    static std::string chromName;
+    sepByChromNum(vecOfPeaksOne,vecSep1,chromName);
+    sepByChromNum(vecOfPeaksTwo,vecSep2,chromName);
     std::vector<Peak> overlappedPeaks;
-    t1.join();
-    t2.join();
-    identifyOverlap(vecOfPeaksOne, vecOfPeaksTwo, overlappedPeaks); // void func, all passed by ref, edits passed by ref overlapped peak vec
-    char input;
+    identifyOverlap(vecSep1, vecSep2, overlappedPeaks); // void func, all passed by ref, edits passed by ref overlapped peak vec
+    writeToFile(overlappedPeaks);
+    //char input;
     // do{
     //     std::cout << "Menu\n";
     //     std::cout << "R: Refseq accesion number to be center of search\n";
