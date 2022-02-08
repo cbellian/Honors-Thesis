@@ -32,17 +32,24 @@ int main(int argc, char *argv[])
     std::vector<long int> vecSep2;
     std::vector<std::string> chromIndex;
     std::vector<long int> temp;
-    std::string chromName = vecOfPeaksOne.at(0).chromNum;
+    std::string chromName;
     int location = 0;
-    for(auto i = 0; i < vecOfPeaksOne.size();i++){
-        chromDecomposition(vecOfPeaksOne,vecSep1,chromName,chromIndex,location);
+    for(auto j = 0; j < vecOfPeaksOne.size();j++){
+        chromName = vecOfPeaksOne.at(j).chromNum;
+        chromNameSearch(chromName,chromIndex,location);
     }
-    for(auto i = 0; i < vecOfPeaksTwo.size();i++){
-        chromDecomposition(vecOfPeaksTwo,vecSep2,chromName,chromIndex,location);
+    for(auto j = 0; j < chromIndex.size();j++){
+        chromName = chromIndex.at(j);
+        for(auto i = 0; i < vecOfPeaksOne.size();i++){
+            chromDecomposition(vecOfPeaksOne,vecSep1,chromName,chromIndex,location);
+        }
+        for(auto i = 0; i < vecOfPeaksTwo.size();i++){
+            chromDecomposition(vecOfPeaksTwo,vecSep2,chromName,chromIndex,location);
+        }
+        std::vector<Peak> overlappedPeaks;
+        identifyOverlap(vecSep1, vecSep2, overlappedPeaks, chromName); // void func, all passed by ref, edits passed by ref overlapped peak vec
+        writeToFile(overlappedPeaks);
     }
-    std::vector<Peak> overlappedPeaks;
-    identifyOverlap(vecSep1, vecSep2, overlappedPeaks, chromName); // void func, all passed by ref, edits passed by ref overlapped peak vec
-    writeToFile(overlappedPeaks);
     char input;
     do{
         std::cout << "Menu\n";

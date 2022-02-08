@@ -89,7 +89,11 @@ bool readTranscriptBed(std::string filename, std::vector <Transcript> &vecOfTran
 
 void writeToFile(std::vector <Peak> &vecOfPeaks){
     std::ofstream out1;
-    out1.open("output.bed");
+    out1.open("output.bed",std::ios_base::app);
+    if(out1.fail()){
+        std::cout << "Failed to open output file.\n";
+        return;
+    }
     for(int i = 0; i < vecOfPeaks.size(); i++){
         out1 << vecOfPeaks.at(i).chromNum << '\t' << vecOfPeaks.at(i).chromStart << '\t' << vecOfPeaks.at(i).chromEnd << '\n';
     }
@@ -100,6 +104,9 @@ bool chromNameSearch(std::string &name,std::vector<std::string> &index, int &loc
         if(name == index.at(i)){
             location = i;
             return true;
+        }
+        else{
+            index.push_back(name);
         }
     }
     return false;
