@@ -41,14 +41,14 @@ bool sortByChrom(const Peak& in1, const Peak& in2){
 }
 
 // can this be made more efficient? will be computationally expensive
-void identifyOverlap(std::vector<long int> &peakfile1, std::vector<long int> &peakfile2,std::vector<Peak> &overlappedPeaks){
+void identifyOverlap(std::vector<long int> &peakfile1, std::vector<long int> &peakfile2,std::vector<Peak> &overlappedPeaks, std::string &name){
     Peak tempPeak;
     for(int i = 0; i < peakfile1.size()-2; i+=2){
         for(int j = 0; j < peakfile2.size()-2; j+=2){
             if(peakfile1.at(i) >= peakfile2.at(j) && peakfile1.at(i) <= peakfile2.at(j+1)){
                 tempPeak.chromStart = peakfile2.at(j);
                 tempPeak.chromEnd = std::max(peakfile1.at(i+1),peakfile2.at(j+1));
-                tempPeak.chromNum = "chr1";
+                tempPeak.chromNum = name;
                 overlappedPeaks.push_back(tempPeak);
             }
         }
@@ -87,19 +87,33 @@ bool readTranscriptBed(std::string filename, std::vector <Transcript> &vecOfTran
     return true;
 }
 
-void sepByChromNum(std::vector <Peak> &vecOfPeaks,std::vector<long int> &chromLoc, std::string &chromName){
-    for(int i = 0; i < vecOfPeaks.size(); i++){
-        if(vecOfPeaks.at(i).chromNum == chromName){
-            chromLoc.push_back(vecOfPeaks.at(i).chromStart);
-            chromLoc.push_back(vecOfPeaks.at(i).chromEnd);
-        }
-    }
-}
-
 void writeToFile(std::vector <Peak> &vecOfPeaks){
     std::ofstream out1;
     out1.open("output.bed");
     for(int i = 0; i < vecOfPeaks.size(); i++){
         out1 << vecOfPeaks.at(i).chromNum << '\t' << vecOfPeaks.at(i).chromStart << '\t' << vecOfPeaks.at(i).chromEnd << '\n';
     }
+}
+
+bool chromNameSearch(std::string &name,std::vector<std::string> &index, int &location){
+    for(int i = 0; i<index.size();i++){
+        if(name == index.at(i)){
+            location = i;
+            return true;
+        }
+    }
+    return false;
+}
+
+void chromDecomposition(std::vector<Peak> &vecOfPeaksOne, std::vector<long int> &vecSep1, std::string &chromName, std::vector<std::string> chromIndex, int &location){
+    for(int i = 0; i<vecOfPeaksOne.size(); i++){
+        chromName = vecOfPeaksOne.at(i).chromNum;
+        if(!chromNameSearch(chromName,chromIndex,location)){
+            chromIndex.push_back(chromName);
+        }
+        else{
+            vecSep1.push_back(vecOfPeaksOne.at(i).chromStart);
+            vecSep1.push_back(vecOfPeaksOne.at(i).chromEnd);
+        }
+    }    
 }

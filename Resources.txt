@@ -1,0 +1,13 @@
+Zebrafish data used as a check
+https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE134055
+
+cutadapt:
+https://cutadapt.readthedocs.io/en/stable/
+
+bowtie 2:
+http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#bowtie2-options-sam-append-comment
+
+Sam to bed:
+https://bedops.readthedocs.io/en/latest/content/reference/file-management/conversion/convert2bed.html
+http://samtools.sourceforge.net/
+
