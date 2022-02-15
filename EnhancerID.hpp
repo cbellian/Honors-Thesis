@@ -5,7 +5,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-// #include <boost/tuple/tuple.hpp>
 
 struct Peak{
     std::string chromNum;
@@ -34,7 +33,5 @@ void chromNameSearch(std::string &name, std::vector<std::string> &index);
 void chromDecomposition(std::vector<Peak> &vecOfPeaksOne,std::string &index,std::vector<Peak> &returnedPeaks);
 
 bool compareByStart(const Peak &peak1, const Peak &peak2);
-
-void binarySearch();
 
 #endif

@@ -5,7 +5,6 @@
 #include <sstream>
 #include <vector>
 #include <thread>
-// #include <boost/tuple/tuple.hpp>
 #include <algorithm>
 
 // read in file
@@ -46,21 +45,23 @@ bool readBedGraph(std::string fileName, std::vector<Peak>&vecOfPeaks){
 // can this be made more efficient? will be computationally expensive
 void identifyOverlap(std::vector<Peak> &peakfile1, std::vector<Peak> &peakfile2,std::vector<Peak> &overlappedPeaks){
     Peak tempPeak;
-    for(auto i = 0; i < peakfile1.size();i++){
-        for(auto j = 0; j< peakfile2.size();j++){
-            if(peakfile1.at(i).chromStart <= peakfile2.at(j).chromEnd && peakfile1.at(i).chromStart >= peakfile2.at(j).chromStart){
-                tempPeak.chromNum = peakfile1.at(i).chromNum;
-                tempPeak.chromStart = peakfile2.at(j).chromStart;
-                if(peakfile1.at(i).chromEnd >= peakfile2.at(j).chromEnd){
-                    tempPeak.chromEnd = peakfile1.at(i).chromEnd;
-                }
-                else{
-                    tempPeak.chromEnd = peakfile2.at(j).chromEnd;
-                }
-            }
+    for(auto i = 0; i < peakfile1.size(); i++){
+        auto lower = std::lower_bound(peakfile2.begin(),peakfile2.end(),peakfile1.at(i),compareByStart);
+        long int upper = 0;
+        if(lower == peakfile2.end()){
+            return;
         }
+        if((*lower).chromEnd > peakfile1.at(i).chromEnd){
+            upper = (*lower).chromEnd;
+        }
+        else{
+            upper = peakfile1.at(i).chromEnd;
+        }
+        tempPeak.chromStart = peakfile1.at(i).chromStart;
+        tempPeak.chromEnd = upper;
+        tempPeak.chromNum = peakfile1.at(i).chromNum;
+        overlappedPeaks.push_back(tempPeak);
     }
-    
 }
 
 

@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
         std::vector<Peak> overlappedPeak;
         chromDecomposition(vecOfPeaksOne,nameOfChrom,singleChromPeaksOne);
         chromDecomposition(vecOfPeaksTwo,nameOfChrom,singleChromPeaksTwo);
-        std::sort(vecOfPeaksOne.begin(),vecOfPeaksTwo.end(),compareByStart);
+        std::sort(vecOfPeaksOne.begin(),vecOfPeaksOne.end(),compareByStart);
         std::sort(vecOfPeaksTwo.begin(),vecOfPeaksTwo.end(),compareByStart);
         identifyOverlap(singleChromPeaksOne,singleChromPeaksTwo,overlappedPeak);
         writeToFile(overlappedPeak);
