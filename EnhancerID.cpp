@@ -2,9 +2,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
-#include <sstream>
 #include <vector>
-#include <thread>
 #include <algorithm>
 
 // read in file
@@ -42,59 +40,36 @@ bool readBedGraph(std::string fileName, std::vector<Peak>&vecOfPeaks){
 }
 
 
-// can this be made more efficient? will be computationally expensive
-void identifyOverlap(std::vector<Peak> &peakfile1, std::vector<Peak> &peakfile2,std::vector<Peak> &overlappedPeaks){
-    Peak tempPeak;
-    for(auto i = 0; i < peakfile1.size(); i++){
-        auto lower = std::lower_bound(peakfile2.begin(),peakfile2.end(),peakfile1.at(i),compareByStart);
-        long int upper = 0;
-        if(lower == peakfile2.end()){
-            return;
-        }
-        if((*lower).chromEnd > peakfile1.at(i).chromEnd){
-            upper = (*lower).chromEnd;
-        }
-        else{
-            upper = peakfile1.at(i).chromEnd;
-        }
-        tempPeak.chromStart = peakfile1.at(i).chromStart;
-        tempPeak.chromEnd = upper;
-        tempPeak.chromNum = peakfile1.at(i).chromNum;
-        overlappedPeaks.push_back(tempPeak);
-    }
-}
-
-
 // read transcript file which includes accesion num
-bool readTranscriptBed(std::string filename, std::vector <Transcript> &vecOfTranscripts){
-    std::ifstream bedIn;
-    bedIn.open(filename);
-    if(bedIn.fail()){
-        return false;
-    }
-    std::string line;
-    int index = 0;
-    while(getline(bedIn,line)){
-        std::stringstream linestream(line);
-        std::string chromNum;
-        std::string chromStart;
-        std::string chromEnd;
-        std::string accesionString;
-        getline(linestream,chromNum,',');
-        getline(linestream,chromStart,',');
-        getline(linestream,chromEnd,',');
-        getline(linestream,accesionString,',');
-        getline(linestream,line,'\n');
-        Transcript tempTranscript;
-        tempTranscript.chromNum = stoi(chromNum);
-        tempTranscript.chromStart = stol(chromStart);
-        tempTranscript.chromEnd = stol(chromEnd);
-        tempTranscript.accesion = accesionString;
-        vecOfTranscripts.push_back(tempTranscript);
-    }
-    bedIn.close();
-    return true;
-}
+// bool readTranscriptBed(std::string filename, std::vector <Transcript> &vecOfTranscripts){
+//     std::ifstream bedIn;
+//     bedIn.open(filename);
+//     if(bedIn.fail()){
+//         return false;
+//     }
+//     std::string line;
+//     int index = 0;
+//     while(getline(bedIn,line)){
+//         std::stringstream linestream(line);
+//         std::string chromNum;
+//         std::string chromStart;
+//         std::string chromEnd;
+//         std::string accesionString;
+//         getline(linestream,chromNum,',');
+//         getline(linestream,chromStart,',');
+//         getline(linestream,chromEnd,',');
+//         getline(linestream,accesionString,',');
+//         getline(linestream,line,'\n');
+//         Transcript tempTranscript;
+//         tempTranscript.chromNum = stoi(chromNum);
+//         tempTranscript.chromStart = stol(chromStart);
+//         tempTranscript.chromEnd = stol(chromEnd);
+//         tempTranscript.accesion = accesionString;
+//         vecOfTranscripts.push_back(tempTranscript);
+//     }
+//     bedIn.close();
+//     return true;
+// }
 
 void writeToFile(std::vector <Peak> &vecOfPeaks){
     std::ofstream out1;
@@ -128,6 +103,21 @@ void chromDecomposition(std::vector<Peak> &vecOfPeaks, std::string &indexName, s
     }
 }
 
+bool searchWithinRange(Peak &peak, int range, long int loci){
+    long int val = 0;
+    if(loci - range < 0){
+        val = 0;
+    }
+    else{
+        val = (loci-range);
+    }
+    return(val <= peak.chromStart && peak.chromStart <= val);
+}
+
 bool compareByStart(const Peak &peak1, const Peak &peak2){
     return peak1.chromStart < peak2.chromStart;
+}
+
+bool compareByEnd(const Peak &peak1, const Peak &peak2){
+    return peak1.chromEnd < peak2.chromEnd;
 }
