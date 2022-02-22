@@ -36,19 +36,21 @@ AP_2_EXON <- density(Lamprey_AP2_A_EXON$V2)
 plot(AP_2_EXON, col = "red", xlab = "Location, Centered On Gene", ylab = "Proportion of Peaks",
       main = "Peak Frequency over TAD compared to Exon location")
 lines(AP_2, col = "green")
-legend("topright",legend=c("Exon","Peak"),col=c("red", "green"),pch = c(10,10))
+legend("topleft",legend=c("Exon","Peak", "Gene Center"),col=c("red", "green","black"),pch = c(10,10,10), box.lty = 0)
+abline(v = 14900000)
 
 TWIST_2 <- density(Lamprey_TWIST_2$V2)
 TWIST_2_EXON <- density(Lamprey_TWIST_2_EXON$V2)
 plot(TWIST_2, col = "green", xlab = "Location, Centered On Gene", ylab = "Proportion of Peaks",
      main = "Peak Frequency over TAD compared to Exon location")
 lines(TWIST_2_EXON, col = "red")
-legend("topright",legend=c("Exon","Peak"),col=c("red", "green"),pch = c(10,10))
+legend("topright",legend=c("Exon","Peak", "Gene Center"),col=c("red", "green", "black"),pch = c(10,10,10), box.lty = 0)
+abline(v = 20498000)
 
 TWIST_3B <- density(Lamprey_TWIST_3B$V2)
 TWIST_3B_EXON <- density(Lamprey_TWIST_3B_EXON$V2)
 plot(TWIST_3B_EXON, col = "red", xlab = "Location, Centered On Gene", ylab = "Proportion of Peaks",
      main = "Peak Frequency over TAD compared to Exon location")
 lines(TWIST_3B, col = "Green")
-legend("topright",legend=c("Exon","Peak"),col=c("red", "green"),pch = c(10,10))
-
+legend("topleft",legend=c("Exon","Peak", "Gene Center"),col=c("red", "green", "black"),pch = c(10,10,10), box.lty = 0)
+abline(v=13139709, col ="black")
