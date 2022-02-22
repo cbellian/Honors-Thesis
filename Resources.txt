@@ -1,6 +1,7 @@
 Zebrafish data used as a check
 https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE134055
 https://epigenome.wustl.edu/zebrafishENCODE/
+https://www.nature.com/articles/s41586-020-2962-9#data-availability
 
 cutadapt:
 https://cutadapt.readthedocs.io/en/stable/
@@ -15,3 +16,6 @@ http://samtools.sourceforge.net/
 Hi-C conversion
 https://hicexplorer.readthedocs.io/en/latest/content/file-formats.html
 
+https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE106372
+https://www.nature.com/articles/s41586-018-0734-6#data-availability
+amphioxus chip-seq
