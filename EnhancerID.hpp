@@ -12,28 +12,16 @@ struct Peak{
     long int chromEnd;
 };
 
+bool readLampreyBroadPeak(std::vector<Peak> &lampreyPeak1, std::string fileName);
 
-struct Transcript{
-    int chromNum;
-    long int chromStart;
-    long int chromEnd;
-    std::string accesion;
-};
+bool readLampreyExonData(std::vector<Peak> &exonPeak, std::string fileName);
 
-bool readBedGraph(std::string filename, std::vector <Peak> &vecOfPeaks); // pass by ref so that return isnt needed because vec is normally passed by value
+bool searchPeaksbyGeneLoci(std::vector<Peak> &lampreyPeak1, std::vector<Peak> &foundPeaks, std::string chromName, long int loc, int distance);
 
-//bool readTranscriptBed(std::string filename, std::vector <Transcript> &vecOfTranscripts);
+bool searchExonsbyGeneLoci(std::vector<Peak> &exonPeak, std::vector<Peak> &foundExons, std::string chromName, long int loc, int distance);
 
-void writeToFile(std::vector <Peak> &vecOfPeaks);
+bool compareFoundPeaks(std::vector<Peak> &LampPeak1, std::vector<Peak> &LampPeak2, std::vector<Peak> &sharedPeaks);
 
-void chromNameSearch(std::string &name, std::vector<std::string> &index);
-
-void chromDecomposition(std::vector<Peak> &vecOfPeaksOne,std::string &index,std::vector<Peak> &returnedPeaks);
-
-bool compareByStart(const Peak &peak1, const Peak &peak2);
-
-bool compareByEnd(const Peak &peak1, const Peak &peak2);
-
-bool searchWithinRange(Peak &peak, int range, long int loci)
+void writeToFile(std::vector<Peak> &sharedPeaks, std::string fileName);
 
 #endif

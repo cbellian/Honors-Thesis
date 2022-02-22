@@ -1,123 +1,122 @@
 #include "EnhancerID.hpp"
-#include <fstream>
-#include <string>
-#include <iostream>
 #include <vector>
-#include <algorithm>
+#include <string>
+#include <fstream>
+#include <sstream>
+ 
+ bool readLampreyBroadPeak(std::vector<Peak> &lampreyPeak1, std::string fileName){
+     std::ifstream in1;
+     in1.open(fileName);
+     if(in1.fail()){
+         std::cout << "Failed to open file" << std::endl;
+         return false;
+     }
+     std::string line;
+     while(getline(in1,line)){
+         std::stringstream sep(line);
+         std::string chromName, start, end;
+         getline(sep,chromName,'\t');
+         getline(sep,start,'\t');
+         getline(sep,end,'\t');
+         Peak temp;
+         temp.chromNum = chromName;
+         temp.chromStart = stol(start);
+         temp.chromEnd = stol(end);
+         lampreyPeak1.push_back(temp);
+     }
+     return true;
+ }
 
-// read in file
-bool readBedGraph(std::string fileName, std::vector<Peak>&vecOfPeaks){
-    std::ifstream bedIn;
-    bedIn.open(fileName);
-    if(bedIn.fail()){
+bool readLampreyExonData(std::vector<Peak> &exonPeak, std::string fileName){
+    std::ifstream in1;
+    in1.open(fileName);
+    if(in1.fail()){
+        std::cout << "Failed to open exon file" << std::endl;
         return false;
     }
     std::string line;
-    std::string chromNum;
-    std::string chromStart;
-    std::string chromEnd;
-    Peak tempPeak;
-    while(bedIn >> line){
-        if(bedIn.eof()){
-            bedIn.close();
-            return true;
-        }
-        if(line.substr(0,3) == "chr"){
-            chromNum = line;
-            bedIn >> line;
-            chromStart = line;
-            bedIn >> line;
-            chromEnd = line;
-            tempPeak.chromNum = chromNum;
-            tempPeak.chromStart = stol(chromStart);
-            tempPeak.chromEnd = stol(chromEnd);
-            vecOfPeaks.push_back(tempPeak);
-        }
-        line.clear(); // necessary to avoid out of range in vec
+    while(getline(in1,line)){
+        std::stringstream sep(line);
+        std::string chromName, start, end;
+        getline(sep,chromName,'\t');
+        getline(sep,start,'\t');
+        getline(sep,end,'\t');
+        Peak temp;
+        temp.chromNum = chromName;
+        temp.chromStart = stol(start);
+        temp.chromEnd = stol(end);
+        exonPeak.push_back(temp);
     }
-    bedIn.close();
     return true;
 }
 
+bool searchPeaksbyGeneLoci(std::vector<Peak> &lampreyPeak1, std::vector<Peak> &foundPeaks, std::string chromName, long int loc, int distance){
+    int lowerbound = loc - distance;
+    if(lowerbound < 0){
+        lowerbound = 0;
+    }
+    int upperbound = loc + distance;
+    std::cout << lowerbound << " ; " << upperbound << std::endl;
+    for(int i = 0; i < lampreyPeak1.size();i++){
+        if(lampreyPeak1.at(i).chromNum == chromName){
+            if(lampreyPeak1.at(i).chromStart >= lowerbound && lampreyPeak1.at(i).chromEnd <= upperbound){
+                Peak temp;
+                temp.chromNum = chromName;
+                temp.chromStart = lampreyPeak1.at(i).chromStart;
+                temp.chromEnd = lampreyPeak1.at(i).chromEnd;
+                foundPeaks.push_back(temp);
+            }
+        }
+    }
+    if(foundPeaks.empty()){
+        return false;
+    }
+    return true;
+}
 
-// read transcript file which includes accesion num
-// bool readTranscriptBed(std::string filename, std::vector <Transcript> &vecOfTranscripts){
-//     std::ifstream bedIn;
-//     bedIn.open(filename);
-//     if(bedIn.fail()){
-//         return false;
-//     }
-//     std::string line;
-//     int index = 0;
-//     while(getline(bedIn,line)){
-//         std::stringstream linestream(line);
-//         std::string chromNum;
-//         std::string chromStart;
-//         std::string chromEnd;
-//         std::string accesionString;
-//         getline(linestream,chromNum,',');
-//         getline(linestream,chromStart,',');
-//         getline(linestream,chromEnd,',');
-//         getline(linestream,accesionString,',');
-//         getline(linestream,line,'\n');
-//         Transcript tempTranscript;
-//         tempTranscript.chromNum = stoi(chromNum);
-//         tempTranscript.chromStart = stol(chromStart);
-//         tempTranscript.chromEnd = stol(chromEnd);
-//         tempTranscript.accesion = accesionString;
-//         vecOfTranscripts.push_back(tempTranscript);
-//     }
-//     bedIn.close();
-//     return true;
-// }
+bool searchExonsbyGeneLoci(std::vector<Peak> &exonPeak, std::vector<Peak> &foundExons, std::string chromName, long int loc, int distance){
+    
+}
 
-void writeToFile(std::vector <Peak> &vecOfPeaks){
+bool compareFoundPeaks(std::vector<Peak> &LampPeak1, std::vector<Peak> &LampPeak2, std::vector<Peak> &sharedPeaks){
+    for(int i = 0;i < LampPeak1.size();i++){
+        for(int j = 0;j < LampPeak2.size();j++){
+            if(LampPeak1.at(i).chromStart >= LampPeak2.at(j).chromStart && LampPeak1.at(i).chromStart <= LampPeak2.at(j).chromEnd){
+                Peak temp;
+                temp.chromNum = LampPeak2.at(j).chromNum;
+                temp.chromStart = LampPeak2.at(j).chromStart;
+                if(LampPeak1.at(i).chromEnd >= LampPeak2.at(j).chromEnd){
+                    temp.chromEnd = LampPeak1.at(i).chromEnd;
+                }
+                else{
+                    temp.chromEnd = LampPeak2.at(j).chromEnd;
+                }
+                sharedPeaks.push_back(temp);
+            }
+            if(LampPeak2.at(j).chromStart >= LampPeak1.at(i).chromStart && LampPeak2.at(j).chromStart <= LampPeak1.at(i).chromEnd){
+                Peak temp;
+                temp.chromNum = LampPeak1.at(i).chromNum;
+                temp.chromStart = LampPeak1.at(i).chromStart;
+                if(LampPeak2.at(j).chromEnd >= LampPeak1.at(i).chromEnd){
+                    temp.chromEnd = LampPeak2.at(j).chromEnd;
+                }
+                else{
+                    temp.chromEnd = LampPeak1.at(i).chromEnd;
+                }
+                sharedPeaks.push_back(temp);
+            }
+        }
+    }
+    if(sharedPeaks.empty()){
+        return false;
+    }
+    return true;
+}
+
+void writeToFile(std::vector<Peak> &sharedPeaks, std::string fileName){
     std::ofstream out1;
-    out1.open("output.bed",std::ios_base::app);
-    if(out1.fail()){
-        std::cout << "Failed to open output file.\n";
-        return;
+    out1.open(fileName);
+    for(int i = 0;i < sharedPeaks.size();i++){
+        out1 << sharedPeaks.at(i).chromNum << '\t' << sharedPeaks.at(i).chromStart << '\t' << sharedPeaks.at(i).chromEnd << '\n';
     }
-    for(int i = 0; i < vecOfPeaks.size(); i++){
-        out1 << vecOfPeaks.at(i).chromNum << '\t' << vecOfPeaks.at(i).chromStart << '\t' << vecOfPeaks.at(i).chromEnd << std::endl;
-    }
-}
-
-void chromNameSearch(std::string &name,std::vector<std::string> &index){
-    if(index.size()==0){
-        index.push_back(name);
-    }
-    for(auto i = 0; i < index.size();i++){
-        if(name != index.at(i)){
-            index.push_back(name);
-            return;
-        }
-    }
-}
-
-void chromDecomposition(std::vector<Peak> &vecOfPeaks, std::string &indexName, std::vector<Peak> &returnedPeaks){
-    for(auto i = 0; i< vecOfPeaks.size();i++){
-        if(vecOfPeaks.at(i).chromNum == indexName){
-            returnedPeaks.push_back(vecOfPeaks.at(i));
-        }
-    }
-}
-
-bool searchWithinRange(Peak &peak, int range, long int loci){
-    long int val = 0;
-    if(loci - range < 0){
-        val = 0;
-    }
-    else{
-        val = (loci-range);
-    }
-    return(val <= peak.chromStart && peak.chromStart <= val);
-}
-
-bool compareByStart(const Peak &peak1, const Peak &peak2){
-    return peak1.chromStart < peak2.chromStart;
-}
-
-bool compareByEnd(const Peak &peak1, const Peak &peak2){
-    return peak1.chromEnd < peak2.chromEnd;
 }
