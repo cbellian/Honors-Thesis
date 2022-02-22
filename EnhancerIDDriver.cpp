@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
     std::cin >> distance;
     std::vector<Peak> foundPeaks1;
     std::vector<Peak> foundPeaks2;
+    std::vector<Peak> foundExons;
     bool found = searchPeaksbyGeneLoci(LampreyBroadPeak1,foundPeaks1,chromNametoSearch,chromPostoSearch,distance);
     if(!found){
         std::cout << "Could not find any file 1 peaks within " << distance << " of " << chromPostoSearch << " on " << chromNametoSearch << std::endl;
@@ -41,11 +42,16 @@ int main(int argc, char *argv[])
     if(!found2){
         std::cout << "Could not find any file 2 peaks within " << distance << " of " << chromPostoSearch << " on " << chromNametoSearch << std::endl; 
     }
+    bool exonFound = searchExonsbyGeneLoci(exonPeak,foundExons,chromNametoSearch,chromPostoSearch,distance);
+    if(!exonFound){
+        std::cout << "Could not find any exon peaks within " << distance << " of " << chromPostoSearch << " on " << chromNametoSearch << std::endl;
+    }
     std::vector<Peak> sharedPeaks;
     bool overlap = compareFoundPeaks(foundPeaks1,foundPeaks2,sharedPeaks);
     if(!overlap){
         std::cout << "No Overlap found between files" << std::endl;
     }
+    
     std::string outputFileName = "output.bed";
     writeToFile(sharedPeaks,outputFileName);
     return 0;

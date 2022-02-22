@@ -56,7 +56,6 @@ bool searchPeaksbyGeneLoci(std::vector<Peak> &lampreyPeak1, std::vector<Peak> &f
         lowerbound = 0;
     }
     int upperbound = loc + distance;
-    std::cout << lowerbound << " ; " << upperbound << std::endl;
     for(int i = 0; i < lampreyPeak1.size();i++){
         if(lampreyPeak1.at(i).chromNum == chromName){
             if(lampreyPeak1.at(i).chromStart >= lowerbound && lampreyPeak1.at(i).chromEnd <= upperbound){
@@ -75,7 +74,27 @@ bool searchPeaksbyGeneLoci(std::vector<Peak> &lampreyPeak1, std::vector<Peak> &f
 }
 
 bool searchExonsbyGeneLoci(std::vector<Peak> &exonPeak, std::vector<Peak> &foundExons, std::string chromName, long int loc, int distance){
-    
+     int lowerbound = loc - distance;
+    if(lowerbound < 0){
+        lowerbound = 0;
+    }
+    int upperbound = loc + distance;
+    for(int i = 0; i < exonPeak.size();i++){
+        if(exonPeak.at(i).chromNum == chromName){
+            if(exonPeak.at(i).chromStart >= lowerbound && exonPeak.at(i).chromEnd <= upperbound){
+                Peak temp;
+                temp.chromNum = chromName;
+                temp.chromStart = exonPeak.at(i).chromStart;
+                temp.chromEnd = exonPeak.at(i).chromEnd;
+                foundExons.push_back(temp);
+            }
+        }
+    }
+    if(foundExons.empty()){
+        return false;
+    }
+    std::cout << foundExons.size() << " :number of exons found" << std::endl;
+    return true;
 }
 
 bool compareFoundPeaks(std::vector<Peak> &LampPeak1, std::vector<Peak> &LampPeak2, std::vector<Peak> &sharedPeaks){
