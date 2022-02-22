@@ -19,3 +19,7 @@ https://hicexplorer.readthedocs.io/en/latest/content/file-formats.html
 https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE106372
 https://www.nature.com/articles/s41586-018-0734-6#data-availability
 amphioxus chip-seq
+
+
+https://genome.ucsc.edu/cgi-bin/hgTables?db=danRer11&hgta_group=hub_280355&hgta_track=hub_280355_ChIP-seqComposite&hgta_table=hub_280355_H3K4me3_DCD000644SQ_peak&hgta_doSchema=describe+table+schema
+https://danio-code.zfin.org/dataExport/?view=table&selected_facet=ChIP-seq-assay_type

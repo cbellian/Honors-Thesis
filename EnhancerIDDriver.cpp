@@ -51,8 +51,9 @@ int main(int argc, char *argv[])
     if(!overlap){
         std::cout << "No Overlap found between files" << std::endl;
     }
-    
-    std::string outputFileName = "output.bed";
+    std::string outputFileName = argv[4];
+    std::string outputFileNameExons = argv[5];
     writeToFile(sharedPeaks,outputFileName);
+    writeToFile(foundExons,outputFileNameExons);
     return 0;
 }
