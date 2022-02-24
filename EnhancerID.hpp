@@ -22,6 +22,10 @@ bool searchExonsbyGeneLoci(std::vector<Peak> &exonPeak, std::vector<Peak> &found
 
 bool compareFoundPeaks(std::vector<Peak> &LampPeak1, std::vector<Peak> &LampPeak2, std::vector<Peak> &sharedPeaks);
 
+bool sharedPeaksDist(std::vector<Peak> &sharedPeaks, std::vector<long int> &distVec, long int loc);
+
 void writeToFile(std::vector<Peak> &sharedPeaks, std::string fileName);
+
+void writeToFileDist(std::vector<long int> &distvec, std::string filename);
 
 #endif

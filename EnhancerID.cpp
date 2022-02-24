@@ -132,10 +132,36 @@ bool compareFoundPeaks(std::vector<Peak> &LampPeak1, std::vector<Peak> &LampPeak
     return true;
 }
 
+bool sharedPeaksDist(std::vector<Peak> &sharedPeaks, std::vector<long int> &distVec, long int loc){
+    long int value = 0;
+    for(int i = 0; i < sharedPeaks.size(); i++){
+        if(sharedPeaks.at(i).chromStart < loc){
+            value = sharedPeaks.at(i).chromStart;
+        }
+        else{
+            value = sharedPeaks.at(i).chromEnd;
+        }
+        long int distance = abs(value - loc);
+        distVec.push_back(distance);
+    }
+    if(distVec.empty()){
+        std::cout << "Empty distance Vector" << std::endl;
+        return false;
+    }
+    return true;
+}
+
 void writeToFile(std::vector<Peak> &sharedPeaks, std::string fileName){
     std::ofstream out1;
     out1.open(fileName);
     for(int i = 0;i < sharedPeaks.size();i++){
         out1 << sharedPeaks.at(i).chromNum << '\t' << sharedPeaks.at(i).chromStart << '\t' << sharedPeaks.at(i).chromEnd << '\n';
+    }
+}
+void writeToFileDist(std::vector<long int> &distvec, std::string filename){
+    std::ofstream out1;
+    out1.open(filename);
+    for(int i = 0; i < distvec.size();i++){
+        out1 << distvec.at(i) << '\n';
     }
 }

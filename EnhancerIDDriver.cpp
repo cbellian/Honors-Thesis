@@ -51,9 +51,16 @@ int main(int argc, char *argv[])
     if(!overlap){
         std::cout << "No Overlap found between files" << std::endl;
     }
+    std::vector<long int> distVec;
+    bool dist = sharedPeaksDist(sharedPeaks,distVec,chromPostoSearch);
+    if(!dist){
+        std::cout << "No distance to gene found" << std::endl;
+    }
     std::string outputFileName = argv[4];
     std::string outputFileNameExons = argv[5];
+    std::string outputfileDist = argv[6];
     writeToFile(sharedPeaks,outputFileName);
     writeToFile(foundExons,outputFileNameExons);
+    writeToFileDist(distVec,outputfileDist);
     return 0;
 }
