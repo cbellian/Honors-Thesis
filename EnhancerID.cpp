@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <iostream>
  
  bool readLampreyBroadPeak(std::vector<Peak> &lampreyPeak1, std::string fileName){
      std::ifstream in1;
@@ -164,4 +165,27 @@ void writeToFileDist(std::vector<long int> &distvec, std::string filename){
     for(int i = 0; i < distvec.size();i++){
         out1 << distvec.at(i) << '\n';
     }
+}
+
+bool searchPeaksbyGeneLociStartandFin(std::vector<Peak> &lampreyPeak1, std::vector<Peak> &foundPeaks, std::string chromName, int startLoc, int endLoc, int distanceFront, int endDistance){
+    int lowerbound = startLoc - distanceFront;
+    if(lowerbound < 0){
+        lowerbound = 0;
+    }
+    int upperbound = endLoc + endDistance;
+    for(int i = 0; i < lampreyPeak1.size();i++){
+        if(lampreyPeak1.at(i).chromNum == chromName){
+            if(lampreyPeak1.at(i).chromStart >= lowerbound && lampreyPeak1.at(i).chromEnd <= upperbound){
+                Peak temp;
+                temp.chromNum = chromName;
+                temp.chromStart = lampreyPeak1.at(i).chromStart;
+                temp.chromEnd = lampreyPeak1.at(i).chromEnd;
+                foundPeaks.push_back(temp);
+            }
+        }
+    }
+    if(foundPeaks.empty()){
+        return false;
+    }
+    return true;
 }
