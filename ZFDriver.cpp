@@ -20,7 +20,7 @@ int main(int argc,char* argv[]){
     int GeneEnd = stoi(strGeneEnd);
     int fDistance = stoi(frontDist);
     int eDistance = stoi(endDist);
-    std::cout << "converted input\n";
+    std::cout << "Converted Input\n";
     std::vector <Peak> ZFPeak1;
     std::vector <Peak> ZFPeak2;
     std::vector <Peak> foundPeak1;
@@ -31,13 +31,13 @@ int main(int argc,char* argv[]){
         std::cout << "Failed to open file 1\n";
         return -1;
     }
-    std::cout << "Read file 1\n";
+    std::cout << "Read File 1\n";
     bool peak2 = readLampreyBroadPeak(ZFPeak2,secondFileName);
     if(!peak2){
         std::cout << "Failed to open file 2\n";
         return -1;
     }
-    std::cout << "Read file 2\n";
+    std::cout << "Read File 2\n";
     bool overlap1 = searchPeaksbyGeneLociStartandFin(ZFPeak1,foundPeak1,chromName,GeneStart,GeneEnd,fDistance,eDistance);
     if(!overlap1){
         std::cout << "Failed to find peaks in file 1 on chromosome " << chromName << std::endl;
