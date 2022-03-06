@@ -189,3 +189,33 @@ bool searchPeaksbyGeneLociStartandFin(std::vector<Peak> &lampreyPeak1, std::vect
     }
     return true;
 }
+
+bool unoverlapFoundPeaks(std::vector<Peak> &LampPeak1, std::vector<Peak> &LampPeak2, std::vector<Peak> &sharedPeaks)
+{
+    Peak temp;
+    for(int i = 0;i < LampPeak1.size();i++)
+    {
+        for(int j = 0;j < LampPeak2.size();j++)
+        {
+            if(LampPeak1.at(i).chromStart < LampPeak2.at(j).chromStart && LampPeak1.at(i).chromEnd < LampPeak2.at(j).chromStart)
+            {
+                temp.chromNum = LampPeak1.at(i).chromNum;
+                temp.chromStart = LampPeak1.at(i).chromStart;
+                temp.chromEnd = LampPeak1.at(i).chromEnd;
+                sharedPeaks.push_back(temp);
+            }
+            if(LampPeak2.at(j).chromStart < LampPeak1.at(i).chromStart && LampPeak2.at(j).chromEnd < LampPeak1.at(i).chromStart)
+            {
+                temp.chromNum = LampPeak2.at(j).chromNum;
+                temp.chromStart = LampPeak2.at(j).chromStart;
+                temp.chromEnd = LampPeak2.at(j).chromEnd;
+                sharedPeaks.push_back(temp);
+            }
+        }
+    }
+    if(sharedPeaks.empty())
+    {
+        return false;
+    }
+    return true;
+}

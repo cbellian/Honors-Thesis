@@ -30,4 +30,6 @@ void writeToFileDist(std::vector<long int> &distvec, std::string filename);
 
 bool searchPeaksbyGeneLociStartandFin(std::vector<Peak> &lampreyPeak1, std::vector<Peak> &foundPeaks, std::string chromName, int startLoc, int endLoc, int distanceFront, int distanceEnd);
 
+bool unoverlapFoundPeaks(std::vector<Peak> &LampPeak1, std::vector<Peak> &LampPeak2, std::vector<Peak> &sharedPeaks);
+
 #endif
