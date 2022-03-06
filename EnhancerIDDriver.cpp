@@ -47,9 +47,20 @@ int main(int argc, char *argv[])
         std::cout << "Could not find any exon peaks within " << distance << " of " << chromPostoSearch << " on " << chromNametoSearch << std::endl;
     }
     std::vector<Peak> sharedPeaks;
-    bool overlap = compareFoundPeaks(foundPeaks1,foundPeaks2,sharedPeaks);
-    if(!overlap){
-        std::cout << "No Overlap found between files" << std::endl;
+    std::cout << "Overlap or Difference?\n";
+    std::string overOrDif;
+    std::cin >> overOrDif;
+    if(overOrDif == "Overlap"){
+        bool overlap = compareFoundPeaks(foundPeaks1,foundPeaks2,sharedPeaks);
+        if(!overlap){
+            std::cout << "No Overlap found between files" << std::endl;
+        }
+    }
+    else{
+        bool diff = unoverlapFoundPeaks(foundPeaks1,foundPeaks2,sharedPeaks);
+        if(!diff){
+            std::cout << "No difference found between files.\n";
+        }
     }
     std::vector<long int> distVec;
     bool dist = sharedPeaksDist(sharedPeaks,distVec,chromPostoSearch);

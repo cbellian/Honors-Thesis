@@ -204,13 +204,6 @@ bool unoverlapFoundPeaks(std::vector<Peak> &LampPeak1, std::vector<Peak> &LampPe
                 temp.chromEnd = LampPeak1.at(i).chromEnd;
                 sharedPeaks.push_back(temp);
             }
-            if(LampPeak2.at(j).chromStart < LampPeak1.at(i).chromStart && LampPeak2.at(j).chromEnd < LampPeak1.at(i).chromStart)
-            {
-                temp.chromNum = LampPeak2.at(j).chromNum;
-                temp.chromStart = LampPeak2.at(j).chromStart;
-                temp.chromEnd = LampPeak2.at(j).chromEnd;
-                sharedPeaks.push_back(temp);
-            }
         }
     }
     if(sharedPeaks.empty())
